@@ -1,4 +1,4 @@
-<h1>VAL3-DialogsSignals</h1>
+<h1>VAL3-Dialogs</h1>
 
 <p>
 User pages creation in SP1 (the teach pendent of the CS8C robots controller) is quite boring and difficult.<br>
