@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Programs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.staubli.com/robotics/VAL3/Program/2">
+  <Program name="bDialogYesNo" access="public">
+    <Parameters xmlns="http://www.staubli.com/robotics/VAL3/Param/1">
+      <Parameter name="x_sTitle" type="string" xsi:type="element" />
+      <Parameter name="x_sQuestion_r1" type="string" xsi:type="element" />
+      <Parameter name="x_sQuestion_r2" type="string" xsi:type="element" />
+      <Parameter name="x_sQuestion_r3" type="string" xsi:type="element" />
+      <Parameter name="x_bResp" type="bool" xsi:type="element" use="reference" />
+    </Parameters>
+    <Locals>
+      <Local name="l_bLoop" type="bool" xsi:type="array" size="1" />
+      <Local name="l_nNum" type="num" xsi:type="array" size="1" />
+    </Locals>
+    <Code><![CDATA[begin
+
+  //return by using the bResp parameter true if the choose was "yes", false if the choose was "no"
+  //notes: screen size is 13rowsX40columns
+  //usage: call bDialogYesNo(bRes, "RETURN IN HOME", "ATTENTION:", "Robot will return in home position", "continue?")
+  
+  wait(getKey()==-1)
+  
+  userPage()
+  call clrscr()
+
+  call sCenterTitle(x_sTitle)
+
+  title(x_sTitle)
+
+  gotoxy(0,4)
+  call sCenterRow(x_sQuestion_r1)
+  putln(x_sQuestion_r1)
+
+  gotoxy(0,5)
+  call sCenterRow(x_sQuestion_r2)
+  putln(x_sQuestion_r2)
+
+  gotoxy(0,6)
+  call sCenterRow(x_sQuestion_r3)
+  putln(x_sQuestion_r3)
+
+  gotoxy(0,13)
+  put("F1=No")
+  gotoxy(34,13)
+  put("F8=Yes")
+
+  do
+    l_nNum=get()
+    if l_nNum==271
+      x_bResp=false
+    elseIf l_nNum==278
+      x_bResp=true
+    endIf
+  until l_nNum==271 or l_nNum==278
+
+  call clrscr()
+  
+  wait(getKey()==-1)
+  
+end]]></Code>
+  </Program>
+</Programs>

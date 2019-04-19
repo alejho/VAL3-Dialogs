@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Programs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.staubli.com/robotics/VAL3/Program/2">
+  <Program name="nDialogInsNum" access="public">
+    <Parameters xmlns="http://www.staubli.com/robotics/VAL3/Param/1">
+      <Parameter name="x_sTitle" type="string" xsi:type="element" />
+      <Parameter name="x_sText_r1" type="string" xsi:type="element" />
+      <Parameter name="x_nNum" type="num" xsi:type="element" use="reference" />
+    </Parameters>
+    <Locals>
+      <Local name="l_nVal" type="num" xsi:type="array" size="1" />
+      <Local name="l_nKey" type="num" xsi:type="array" size="1" />
+    </Locals>
+    <Code><![CDATA[begin
+  
+  //notes: screen size is 13rowsX40columns
+  //usage: call DialogInsNums("NUMERIC INS", "Insert a value for foo:", num, screen)
+  
+  wait(getKey()==-1)
+  userPage()
+  call clrscr()
+  l_nVal=x_nNum
+  
+  
+  call sCenterTitle(x_sTitle)
+  
+  title(x_sTitle)
+  
+  gotoxy(0,4)
+  //call sCenterRow(x_sText_r1)
+  put(x_sText_r1)
+  
+  gotoxy(34,13)
+  put("F8=Ok")
+  
+  gotoxy(0,13)
+  put("F1=Esc")
+  
+  gotoxy(len(x_sText_r1)+1,4)
+  gotoxy(len(x_sText_r1)+1, 4)    
+
+  
+  do
+    l_nKey=get(l_nVal)
+    if l_nKey==278
+      x_nNum=l_nVal
+    endIf
+  until l_nKey==271 or l_nKey==278
+  
+  call clrscr()
+  wait(getKey()==-1)
+  
+end]]></Code>
+  </Program>
+</Programs>

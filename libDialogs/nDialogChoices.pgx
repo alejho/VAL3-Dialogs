@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Programs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.staubli.com/robotics/VAL3/Program/2">
+  <Program name="nDialogChoices" access="public">
+    <Parameters xmlns="http://www.staubli.com/robotics/VAL3/Param/1">
+      <Parameter name="x_sTitle" type="string" xsi:type="element" />
+      <Parameter name="x_sOpt_r1" type="string" xsi:type="element" />
+      <Parameter name="x_sOpt_r2" type="string" xsi:type="element" />
+      <Parameter name="x_sOpt_r3" type="string" xsi:type="element" />
+      <Parameter name="x_sOpt_r4" type="string" xsi:type="element" />
+      <Parameter name="x_sOpt_r5" type="string" xsi:type="element" />
+      <Parameter name="x_sOpt_r6" type="string" xsi:type="element" />
+      <Parameter name="x_nResp" type="num" xsi:type="element" use="reference" />
+    </Parameters>
+    <Locals>
+      <Local name="l_nNum" type="num" xsi:type="array" size="1" />
+      <Local name="l_bLoop" type="bool" xsi:type="array" size="1" />
+    </Locals>
+    <Code><![CDATA[begin
+
+  //return by using the nResp parameter the index of the option choosed
+  //notes: screen size is 13rowsX40columns
+  //usage: ...set as "" every option you don't need to use example:
+  //call nDialogChoices("MULTIPLE OPTIONS", "option1", "option2", "", "option4", "option5", "option6", nResp) 
+  
+  wait(getKey()==-1)
+  userPage()
+  call clrscr()
+
+  call sCenterTitle(x_sTitle)
+
+  title(x_sTitle)
+
+  if x_sOpt_r1!=""
+    gotoxy(0,2)
+    //call sCenterRow(x_sOpt_r1)
+    put("F1-->")
+    putln(x_sOpt_r1)
+  endIf
+
+  if x_sOpt_r2!=""
+    gotoxy(0,3)
+    //call sCenterRow(x_sOpt_r2)
+    put("F2-->")
+    putln(x_sOpt_r2)
+  endIf
+
+  if x_sOpt_r3!=""
+    gotoxy(0,4)
+    //call sCenterRow(x_sOpt_r3)
+    put("F3-->")
+    putln(x_sOpt_r3)
+  endIf
+
+  if x_sOpt_r4!=""
+    gotoxy(0,5)
+    //call sCenterRow(x_sOpt_r4)
+    put("F4-->")
+    putln(x_sOpt_r4)
+  endIf
+
+  if x_sOpt_r5!=""
+    gotoxy(0,6)
+    //call sCenterRow(x_sOpt_r5)
+    put("F5-->")
+    putln(x_sOpt_r5)
+  endIf
+
+  if x_sOpt_r6!=""
+    gotoxy(0,7)
+    //call sCenterRow(x_sOpt_r5)
+    put("F6-->")
+    putln(x_sOpt_r6)
+  endIf
+  
+  
+  getKey()
+  l_bLoop=true
+  
+  while l_bLoop
+    l_nNum=get()
+    if l_nNum==271 and x_sOpt_r1!=""
+      x_nResp=0
+      l_bLoop=false
+    elseIf l_nNum==272 and x_sOpt_r2!=""
+      x_nResp=1
+      l_bLoop=false
+    elseIf l_nNum==273 and x_sOpt_r3!=""
+      x_nResp=2
+      l_bLoop=false
+    elseIf l_nNum==274 and x_sOpt_r4!=""
+      x_nResp=3
+      l_bLoop=false
+    elseIf l_nNum==275 and x_sOpt_r5!=""
+      x_nResp=4
+      l_bLoop=false
+    elseIf l_nNum==276 and x_sOpt_r6!=""
+      x_nResp=5
+      l_bLoop=false
+    endIf
+  endWhile
+  
+  call clrscr()
+  wait(getKey()==-1)
+  
+end]]></Code>
+  </Program>
+</Programs>

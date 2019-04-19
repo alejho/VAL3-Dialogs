@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Programs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.staubli.com/robotics/VAL3/Program/2">
+  <Program name="changeTrsf" access="public">
+    <Parameters xmlns="http://www.staubli.com/robotics/VAL3/Param/1">
+      <Parameter name="x_tTrsf" type="trsf" xsi:type="array" use="reference" />
+      <Parameter name="x_sTitle" type="string" xsi:type="element" />
+      <Parameter name="x_sComment" type="string" xsi:type="element" />
+    </Parameters>
+    <Locals>
+      <Local name="l_bRefresh" type="bool" xsi:type="array" size="1" />
+      <Local name="l_nView" type="num" xsi:type="array" size="1" />
+      <Local name="l_nIndex" type="num" xsi:type="array" size="1" />
+      <Local name="l_sItem" type="string" xsi:type="array" size="1" />
+      <Local name="l_tTrsf" type="trsf" xsi:type="array" size="1" />
+      <Local name="l_sEvent" type="string" xsi:type="array" size="1" />
+      <Local name="l_sEmpty" type="string" xsi:type="array" size="1" />
+      <Local name="l_nAddon" type="num" xsi:type="array" size="1" />
+    </Locals>
+    <Code><![CDATA[begin
+  //logMsg("[KERNEL] INTERFACE:PAGE changeTrsf "+x_sTitle)
+  // INIT all 
+  l_bRefresh=false
+  l_nIndex=0
+  l_nView=0
+  call setSizeList(19,0,19,8)
+  call setView(false)
+  l_tTrsf=x_tTrsf
+  //release the button
+  call nullKey(nKey)
+  // set the frame
+  do
+    cls()
+    call type(0,12,x_sComment)
+    call typeMenu(8,"OK")
+    call listcreate(x_sTitle)
+    l_sItem=("coord  X > "+toString(".2",l_tTrsf.x))
+    call listadd(l_sItem)
+    l_sItem=("coord  Y > "+toString(".2",l_tTrsf.y))
+    call listadd(l_sItem)
+    l_sItem=("coord  Z > "+toString(".2",l_tTrsf.z))
+    call listadd(l_sItem)
+    l_sItem=("coord RX > "+toString(".2",l_tTrsf.rx))
+    call listadd(l_sItem)
+    l_sItem=("coord RY > "+toString(".2",l_tTrsf.ry))
+    call listadd(l_sItem)
+    l_sItem=("coord RZ > "+toString(".2",l_tTrsf.rz))
+    call listadd(l_sItem)
+    // show the list
+    nView=l_nIndex
+    call listupdate(l_nIndex-l_nView)
+    do
+      l_nView=nView
+      nKey=get()
+      //l_pPoint.trsf=l_tTrsf
+      call listevent(nKey,l_nIndex,l_sEvent)
+      switch nKey
+        case 270
+          //
+          // clean the line
+          call listcursor(nView,false)
+          l_sEmpty=""
+          switch l_nIndex
+            case 0
+              //  x-value
+              call changeValue(l_tTrsf.x,0,0,10+40-nBottomX,nView+1,l_sEmpty)
+            break
+            case 1
+              //  y-value
+              call changeValue(l_tTrsf.y,0,0,10+40-nBottomX,nView+1,l_sEmpty)
+            break
+            case 2
+              //  z-value
+              call changeValue(l_tTrsf.z,0,0,10+40-nBottomX,nView+1,l_sEmpty)
+            break
+            case 3
+              //  rx-value
+              call changeValue(l_tTrsf.rx,0,0,10+40-nBottomX,nView+1,l_sEmpty)
+            break
+            case 4
+              //  ry-value
+              call changeValue(l_tTrsf.ry,0,0,10+40-nBottomX,nView+1,l_sEmpty)
+            break
+            case 5
+              //  rz-value
+              call changeValue(l_tTrsf.rz,0,0,10+40-nBottomX,nView+1,l_sEmpty)
+            break
+            case 6
+              // addon
+              l_nIndex=find(l_sEvent,">")
+              call changeValue(l_nAddon,0,0,l_nIndex+1+2+nTopX,nView+nTopY+1,l_sEmpty)
+            break
+          endSwitch
+          l_bRefresh=true
+        break
+        case 278
+          // VALIDATE
+          x_tTrsf=l_tTrsf
+        break
+      endSwitch 
+    until l_bRefresh==true or nKey==255 or nKey==278
+    l_bRefresh=false
+  until nKey==255 or nKey==278
+  // check the key
+  if nKey==278
+    // validate
+    x_tTrsf=l_tTrsf
+  endIf
+  // release the resource
+  call nullKey(nKey)
+end]]></Code>
+  </Program>
+</Programs>

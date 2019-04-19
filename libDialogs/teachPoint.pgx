@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Programs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.staubli.com/robotics/VAL3/Program/2">
+  <Program name="teachPoint" access="public">
+    <Parameters xmlns="http://www.staubli.com/robotics/VAL3/Param/1">
+      <Parameter name="x_sPointName" type="string" xsi:type="element" />
+      <Parameter name="x_tTool" type="tool" xsi:type="element" />
+      <Parameter name="x_fFrame" type="frame" xsi:type="element" />
+      <Parameter name="x_pPoint" type="point" xsi:type="element" use="reference" />
+    </Parameters>
+    <Locals>
+      <Local name="l_sTemp" type="string" xsi:type="array" size="1" />
+      <Local name="l_nNum" type="num" xsi:type="array" size="1" />
+      <Local name="l_pPoint" type="point" xsi:type="array" size="1" />
+    </Locals>
+    <Code><![CDATA[begin
+  
+  wait(getKey()==-1)
+  
+  userPage()
+  call clrscr()
+  
+  l_sTemp = "teaching "+x_sPointName
+  call sCenterTitle(l_sTemp)
+
+  title(l_sTemp)
+
+  gotoxy(0,4)
+  l_sTemp = "premi F8 per acquisire "+x_sPointName
+  call sCenterRow(l_sTemp)
+  putln(l_sTemp)
+
+  gotoxy(0,5)
+  l_sTemp = "premi F1 per uscire"
+  call sCenterRow(l_sTemp)
+  putln(l_sTemp)
+
+  gotoxy(0,13)
+  put("F1=Esc")
+  gotoxy(34,13)
+  put("F8=Qui")
+
+  do
+    l_nNum=get()
+    if l_nNum==271
+      call dialogOnlyOK("teaching "+x_sPointName,"acquisizione punto annullata",x_sPointName+" non è stato modificato","premi F1 per continuare","")
+    elseIf l_nNum==278
+      l_pPoint = here(x_tTool, x_fFrame)
+      x_pPoint.trsf = position(l_pPoint, x_fFrame)
+      call trsfDialogIns("teaching "+x_sPointName, "", x_pPoint.trsf)
+    endIf
+  until l_nNum==271 or l_nNum==278
+
+  call clrscr()
+  
+  wait(getKey()==-1)
+
+end]]></Code>
+  </Program>
+</Programs>
